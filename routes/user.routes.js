@@ -2,18 +2,41 @@ const express = require('express')
 const router = express.Router()
 const user = require('../models/user.model')
 const middlewares =  require('../helpers/middlewares')
+let users = require('../data/users.json')
 
 router.get('/', async (req, res) => {
-    
-    await user.getUsers()
-    .then(users => res.json(users))
-    .catch(err => {
-        if (err.status) {
-            res.status(err.status).json({ message: err.message })
-        } else {
-            res.status(500).json({ message: err.message })
+    let page = parseInt(req.query.page)
+    let pageLimit = parseInt(req.query.limit)
+    let start = page - 1
+    let end = pageLimit
+
+    if(typeof page != 'undefined' && typeof pageLimit != 'undefined'){
+        if(page <= 0 || !page || pageLimit <=0 || !pageLimit){
+            //res.status(400).json({ message: 'invalid parameter'})
+        }else{
+            if(page != 1){
+                start = page * pageLimit - pageLimit
+                end = start + pageLimit
+            }
+            res.json({
+                'page' : page,
+                'limit' : pageLimit,
+                'users' : users.slice(start, end)
+            })
         }
-    })
+    }else if(typeof req.query.search_key != 'undefined' && typeof req.query.search_value != 'undefined'){
+
+    }else{
+        await user.getUsers()
+        .then(users => res.json(users))
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message })
+            } else {
+                res.status(500).json({ message: err.message })
+            }
+        })
+    }
 })
 
 router.get('/:id', middlewares.mustBeInteger, async (req, res) => {
