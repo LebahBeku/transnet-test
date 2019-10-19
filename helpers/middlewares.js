@@ -14,18 +14,6 @@ function mustBeInteger(req, res, next) {
 
 function checkFieldsUser(req, res, next){
     const { first_name, last_name, email, gender} = req.body
-
-    if(first_name && last_name && email, gender) {
-        next()
-    }else{
-        res.status(400).json({
-            message: 'all field must be fill'
-        })
-    }
-}
-
-function checkFieldsUser(req, res, next){
-    const { first_name, last_name, email, gender} = req.body
     let existEmail = users.find(r => r.email == email)
 
     if(/(.+)@(.+){2,}\.(.+){2,}/.test(email)){
