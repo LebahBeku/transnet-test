@@ -10,9 +10,9 @@ router.get('/', async (req, res) => {
     let start = page - 1
     let end = pageLimit
 
-    if(typeof page != 'undefined' && typeof pageLimit != 'undefined'){
+    if(!isNaN(page) || !isNaN(pageLimit)){
         if(page <= 0 || !page || pageLimit <=0 || !pageLimit){
-            //res.status(400).json({ message: 'invalid parameter'})
+            res.status(400).json({ message: 'invalid parameter'})
         }else{
             if(page != 1){
                 start = page * pageLimit - pageLimit
@@ -21,11 +21,13 @@ router.get('/', async (req, res) => {
             res.json({
                 'page' : page,
                 'limit' : pageLimit,
+                'total' : users.length,
                 'users' : users.slice(start, end)
             })
         }
     }else if(typeof req.query.search_key != 'undefined' && typeof req.query.search_value != 'undefined'){
-
+        let results = middlewares.searchData(req.query.search_key, req.query.search_value)
+        res.json(results)
     }else{
         await user.getUsers()
         .then(users => res.json(users))
