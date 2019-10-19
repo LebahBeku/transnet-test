@@ -12,6 +12,18 @@ function mustBeInteger(req, res, next) {
     }
 }
 
+function searchData(key, value){
+    const results = []
+    
+    for (var i=0 ; i < users.length ; i++)
+    {
+        if (users[i][key] == value) {
+            results.push(users[i]);
+        }
+    }
+    return results
+}
+
 function checkFieldsUser(req, res, next){
     const { first_name, last_name, email, gender} = req.body
     let existEmail = users.find(r => r.email == email)
@@ -37,5 +49,6 @@ function checkFieldsUser(req, res, next){
 
 module.exports = {
     mustBeInteger,
+    searchData,
     checkFieldsUser
 }
