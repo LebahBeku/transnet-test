@@ -21,19 +21,6 @@ function mustBeInArray(array, id){
     })
 }
 
-function checkEmail(array, email){
-    return new Promise((resolve, reject) => {
-        const row =  array.find(r => r.email == email)
-        if(row){
-            reject({
-                message: 'email already exist',
-                status: 400
-            })
-        }
-        resolve(row)
-    })
-}
-
 function writeJSONFile(filename, content){
     fs.writeFileSync(filename, JSON.stringify(content), 'utf8', (err) => {
         if(err){
