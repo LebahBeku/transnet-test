@@ -26,7 +26,7 @@ function checkFieldsUser(req, res, next){
 
 function checkFieldsUser(req, res, next){
     const { first_name, last_name, email, gender} = req.body
-    var existEmail = users.find(r => r.email == email)
+    let existEmail = users.find(r => r.email == email)
 
     if(/(.+)@(.+){2,}\.(.+){2,}/.test(email)){
         if(first_name && last_name && email && gender && !existEmail) {
