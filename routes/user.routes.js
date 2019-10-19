@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 const user = require('../models/user.model')
 const middlewares =  require('../helpers/middlewares')
-let users = require('../data/users.json')
 
 router.get('/', async (req, res) => {
+    
     await user.getUsers()
     .then(users => res.json(users))
     .catch(err => {
